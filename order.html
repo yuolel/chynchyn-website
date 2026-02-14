@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Замовити індивідуальний пошив чиносів CHYN CHYN">
+    <title>Оформлення замовлення - CHYN CHYN</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <style>
+        .order-page {
+            padding: 3rem 0;
+        }
+
+        .order-summary {
+            background: var(--light-gray);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 3rem;
+        }
+
+        .order-summary h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--gold);
+            padding-top: 1rem;
+            margin-top: 0.5rem;
+            border-top: 2px solid var(--gold);
+        }
+
+        .order-form {
+            max-width: 800px;
+        }
+
+        .form-section {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid var(--medium-gray);
+            margin-bottom: 2rem;
+        }
+
+        .form-section h3 {
+            margin-bottom: 1.5rem;
+            color: var(--charcoal);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--charcoal);
+        }
+
+        .form-group label .required {
+            color: var(--brick-red);
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"],
+        .form-group input[type="number"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            border: 2px solid var(--medium-gray);
+            border-radius: 4px;
+            font-family: var(--font-body);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .measurements-section {
+            display: none;
+            background: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+        }
+
+        .measurements-section.active {
+            display: block;
+        }
+
+        .measurements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .payment-info {
+            background: #fff3cd;
+            border: 2px solid var(--gold);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .payment-info h4 {
+            color: var(--charcoal);
+            margin-bottom: 0.5rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .empty-cart-message {
+            text-align: center;
+            padding: 3rem;
+            background: var(--light-gray);
+            border-radius: 8px;
+        }
+
+        .empty-cart-message h2 {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="/" class="logo">CHYN CHYN</a>
+
+            <button class="mobile-menu-toggle">☰</button>
+
+            <nav>
+                <ul>
+                    <li><a href="/shop.html">Магазин</a></li>
+                    <li><a href="/order.html">Індивідуальні замовлення</a></li>
+                    <li><a href="/about.html">Про нас</a></li>
+                    <li><a href="/contact.html">Контакти</a></li>
+                    <li><a href="https://www.etsy.com/shop/ChynChyn" target="_blank">ENG</a></li>
+                    <li>
+                        <div class="cart-icon" id="cart-icon" onclick="toggleCartPreview()">
+                            🛒
+                            <span class="cart-count" id="cart-count" style="display: none;">0</span>
+                        </div>
+
+                        <!-- Cart Preview Dropdown -->
+                        <div class="cart-preview" id="cart-preview">
+                            <div class="empty-cart" id="empty-cart">
+                                <p>Ваш кошик порожній</p>
+                            </div>
+                            <div class="cart-items" id="cart-items" style="display: none;"></div>
+                            <div class="cart-total" id="cart-total" style="display: none;"></div>
+                            <div class="cart-actions" id="cart-actions" style="display: none;">
+                                <a href="/order.html" class="btn btn-primary" style="width: 100%;">
+                                    Оформити замовлення
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Order Page -->
+    <section class="order-page">
+        <div class="container">
+            <div class="section-title">
+                <h1>Оформлення замовлення</h1>
+                <p>Заповніть форму і ми зв'яжемося з вами протягом 24 годин</p>
+            </div>
+
+            <!-- Empty Cart Message -->
+            <div id="empty-cart-message" class="empty-cart-message" style="display: none;">
+                <h2>Ваш кошик порожній</h2>
+                <p>Додайте товари до кошика, щоб оформити замовлення</p>
+                <a href="/shop.html" class="btn btn-primary mt-2">Перейти до магазину</a>
+            </div>
+
+            <!-- Order Content -->
+            <div id="order-content" style="display: none;">
+                <!-- Order Summary -->
+                <div class="order-summary" id="order-summary"></div>
+
+                <!-- Order Form -->
+                <form name="custom-order" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="order-form">
+                    <!-- Honeypot for spam prevention -->
+                    <p style="display: none;">
+                        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+                    </p>
+
+                    <!-- Hidden field with cart data -->
+                    <input type="hidden" name="order-items" id="order-items-hidden">
+                    <input type="hidden" name="order-total" id="order-total-hidden">
+
+                    <!-- Customer Information -->
+                    <div class="form-section">
+                        <h3>Контактна інформація</h3>
+
+                        <div class="form-group">
+                            <label for="customer-name">Повне ім'я <span class="required">*</span></label>
+                            <input type="text" id="customer-name" name="name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customer-email">Email <span class="required">*</span></label>
+                            <input type="email" id="customer-email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customer-phone">Телефон <span class="required">*</span></label>
+                            <input type="tel" id="customer-phone" name="phone" placeholder="+38 0XX XXX XX XX" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customer-address">Адреса доставки <span class="required">*</span></label>
+                            <textarea id="customer-address" name="address" placeholder="Вкажіть місто, відділення Нової Пошти або адресу" required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Custom Measurements -->
+                    <div class="form-section">
+                        <h3>Індивідуальний пошив (за бажанням)</h3>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="custom-measurements-checkbox" name="custom-order">
+                            <label for="custom-measurements-checkbox">Це індивідуальне замовлення (потрібні заміри)</label>
+                        </div>
+
+                        <div class="measurements-section" id="measurements-section">
+                            <p style="margin-bottom: 1rem; color: var(--dark-gray);">
+                                Вкажіть ваші заміри в сантиметрах. Ми рекомендуємо зняти заміри зі штанів, які вам добре підходять.
+                            </p>
+
+                            <div class="measurements-grid">
+                                <div class="form-group">
+                                    <label for="waist">Талія (A)</label>
+                                    <input type="number" id="waist" name="waist" step="0.5" placeholder="см">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="front-rise">Передня висота (C)</label>
+                                    <input type="number" id="front-rise" name="front-rise" step="0.5" placeholder="см">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inseam">Довжина по шву (D)</label>
+                                    <input type="number" id="inseam" name="inseam" step="0.5" placeholder="см">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="hips">Стегна</label>
+                                    <input type="number" id="hips" name="hips" step="0.5" placeholder="см">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="thigh">Ширина стегна</label>
+                                    <input type="number" id="thigh" name="thigh" step="0.5" placeholder="см">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="leg-opening">Ширина низу (E)</label>
+                                    <input type="number" id="leg-opening" name="leg-opening" step="0.5" placeholder="см">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-top: 1rem;">
+                                <label for="measurement-photos">Фото замірів (за бажанням)</label>
+                                <input type="file" id="measurement-photos" name="measurement-photos" accept="image/*" multiple>
+                                <small style="color: var(--dark-gray); display: block; margin-top: 0.5rem;">
+                                    Можна завантажити декілька фото
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Notes -->
+                    <div class="form-section">
+                        <h3>Додаткова інформація</h3>
+
+                        <div class="form-group">
+                            <label for="special-requests">Особливі побажання або запитання</label>
+                            <textarea id="special-requests" name="special-requests" placeholder="Напишіть будь-які додаткові побажання до замовлення"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Payment Information -->
+                    <div class="payment-info">
+                        <h4>💳 Оплата</h4>
+                        <p>Оплата здійснюється банківським переказом. Після підтвердження замовлення ми надішлемо вам реквізити для оплати.</p>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary submit-btn">
+                        Відправити замовлення
+                    </button>
+
+                    <p style="text-align: center; margin-top: 1rem; color: var(--dark-gray); font-size: 0.9rem;">
+                        Натискаючи кнопку, ви погоджуєтесь з обробкою персональних даних
+                    </p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>CHYN CHYN</h3>
+                    <p>Преміум чиноси українського виробництва з 2017 року</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Навігація</h3>
+                    <ul>
+                        <li><a href="/shop.html">Магазин</a></li>
+                        <li><a href="/order.html">Індивідуальні замовлення</a></li>
+                        <li><a href="/about.html">Про нас</a></li>
+                        <li><a href="/contact.html">Контакти</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Контакти</h3>
+                    <ul>
+                        <li>Email: <a href="mailto:office@chynchyn.com">office@chynchyn.com</a></li>
+                        <li>Телефон: <a href="tel:+380663497232">+38 066 349 72 32</a></li>
+                        <li>WhatsApp / Viber / Telegram</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Соціальні мережі</h3>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/ChynChynUA/" target="_blank" title="Facebook">📘</a>
+                        <a href="https://www.etsy.com/shop/ChynChyn" target="_blank" title="Etsy">🛍️</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 CHYN CHYN. Всі права захищені.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/products.js"></script>
+    <script src="/assets/js/cart.js"></script>
+    <script>
+        // Toggle measurements section
+        document.getElementById('custom-measurements-checkbox').addEventListener('change', function() {
+            const measurementsSection = document.getElementById('measurements-section');
+            if (this.checked) {
+                measurementsSection.classList.add('active');
+            } else {
+                measurementsSection.classList.remove('active');
+            }
+        });
+
+        // Initialize order page
+        async function initOrderPage() {
+            await loadProducts();
+            const cart = getCart();
+
+            if (!cart || cart.items.length === 0) {
+                // Show empty cart message
+                document.getElementById('empty-cart-message').style.display = 'block';
+                document.getElementById('order-content').style.display = 'none';
+                return;
+            }
+
+            // Show order content
+            document.getElementById('empty-cart-message').style.display = 'none';
+            document.getElementById('order-content').style.display = 'block';
+
+            // Build order summary
+            const summaryHTML = `
+                <h2>Ваше замовлення</h2>
+                ${cart.items.map(item => `
+                    <div class="summary-item">
+                        <span>${item.name} ${item.size ? `(Розмір: ${item.size})` : ''} × ${item.quantity}</span>
+                        <span>${formatPrice(item.price * item.quantity)}</span>
+                    </div>
+                `).join('')}
+                <div class="summary-item">
+                    <span><strong>Загальна сума:</strong></span>
+                    <span><strong>${formatPrice(cart.total)}</strong></span>
+                </div>
+            `;
+            document.getElementById('order-summary').innerHTML = summaryHTML;
+
+            // Populate hidden form fields
+            document.getElementById('order-items-hidden').value = JSON.stringify(cart.items);
+            document.getElementById('order-total-hidden').value = `${cart.total} UAH`;
+
+            // Show cart actions
+            const cartActions = document.getElementById('cart-actions');
+            if (cartActions) {
+                cartActions.style.display = 'block';
+            }
+        }
+
+        // Handle form submission
+        const form = document.querySelector('form[name="custom-order"]');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                // Form will submit normally to Netlify
+                // After successful submission, clear cart
+                setTimeout(() => {
+                    clearCart();
+                }, 100);
+            });
+        }
+
+        initOrderPage();
+    </script>
+</body>
+</html>
