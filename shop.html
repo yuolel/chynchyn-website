@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Магазин CHYN CHYN - Чиноси, літні штани, шорти, домашній одяг">
+    <title>Магазин - CHYN CHYN</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="/" class="logo">CHYN CHYN</a>
+
+            <button class="mobile-menu-toggle">☰</button>
+
+            <nav>
+                <ul>
+                    <li><a href="/shop.html">Магазин</a></li>
+                    <li><a href="/order.html">Індивідуальні замовлення</a></li>
+                    <li><a href="/about.html">Про нас</a></li>
+                    <li><a href="/contact.html">Контакти</a></li>
+                    <li><a href="https://www.etsy.com/shop/ChynChyn" target="_blank">ENG</a></li>
+                    <li>
+                        <div class="cart-icon" id="cart-icon" onclick="toggleCartPreview()">
+                            🛒
+                            <span class="cart-count" id="cart-count" style="display: none;">0</span>
+                        </div>
+
+                        <!-- Cart Preview Dropdown -->
+                        <div class="cart-preview" id="cart-preview">
+                            <div class="empty-cart" id="empty-cart">
+                                <p>Ваш кошик порожній</p>
+                            </div>
+                            <div class="cart-items" id="cart-items" style="display: none;"></div>
+                            <div class="cart-total" id="cart-total" style="display: none;"></div>
+                            <div class="cart-actions" id="cart-actions" style="display: none;">
+                                <a href="/order.html" class="btn btn-primary" style="width: 100%;">
+                                    Оформити замовлення
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Shop Content -->
+    <section style="padding: 3rem 0;">
+        <div class="container">
+            <div class="section-title">
+                <h1>Наш магазин</h1>
+                <p>Виберіть ваші ідеальні штани</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters" id="category-filters">
+                <button class="filter-btn active" data-category="all">Всі</button>
+                <button class="filter-btn" data-category="chinos">Чиноси</button>
+                <button class="filter-btn" data-category="summer">Літні штани</button>
+                <button class="filter-btn" data-category="shorts">Шорти</button>
+                <button class="filter-btn" data-category="loungewear">Домашній одяг</button>
+            </div>
+
+            <!-- Sort -->
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <label for="sort-select" style="margin-right: 0.5rem; font-weight: 600;">Сортувати:</label>
+                <select id="sort-select" style="padding: 0.5rem 1rem; border: 2px solid var(--medium-gray); border-radius: 4px; font-size: 1rem;">
+                    <option value="">За замовчуванням</option>
+                    <option value="price-low">Ціна (від низької)</option>
+                    <option value="price-high">Ціна (від високої)</option>
+                    <option value="name">Назва (А→Я)</option>
+                </select>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="product-grid" id="product-grid"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>CHYN CHYN</h3>
+                    <p>Преміум чиноси українського виробництва з 2017 року</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Навігація</h3>
+                    <ul>
+                        <li><a href="/shop.html">Магазин</a></li>
+                        <li><a href="/order.html">Індивідуальні замовлення</a></li>
+                        <li><a href="/about.html">Про нас</a></li>
+                        <li><a href="/contact.html">Контакти</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Контакти</h3>
+                    <ul>
+                        <li>Email: <a href="mailto:office@chynchyn.com">office@chynchyn.com</a></li>
+                        <li>Телефон: <a href="tel:+380663497232">+38 066 349 72 32</a></li>
+                        <li>WhatsApp / Viber / Telegram</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Соціальні мережі</h3>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/ChynChynUA/" target="_blank" title="Facebook">📘</a>
+                        <a href="https://www.etsy.com/shop/ChynChyn" target="_blank" title="Etsy">🛍️</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 CHYN CHYN. Всі права захищені.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/products.js"></script>
+    <script src="/assets/js/cart.js"></script>
+    <script>
+        let currentCategory = 'all';
+        let currentSort = '';
+
+        // Initialize shop page
+        async function initShopPage() {
+            await loadProducts();
+            displayProducts();
+
+            // Category filter buttons
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active state
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    // Update category and display
+                    currentCategory = btn.dataset.category;
+                    displayProducts();
+                });
+            });
+
+            // Sort dropdown
+            const sortSelect = document.getElementById('sort-select');
+            sortSelect.addEventListener('change', (e) => {
+                currentSort = e.target.value;
+                displayProducts();
+            });
+
+            // Show cart actions if cart has items
+            const cart = getCart();
+            const cartActions = document.getElementById('cart-actions');
+            if (cartActions && cart.items.length > 0) {
+                cartActions.style.display = 'block';
+            }
+        }
+
+        function displayProducts() {
+            let products = getProductsByCategory(currentCategory);
+            if (currentSort) {
+                products = sortProducts(products, currentSort);
+            }
+            renderProducts(products, 'product-grid');
+        }
+
+        initShopPage();
+    </script>
+</body>
+</html>

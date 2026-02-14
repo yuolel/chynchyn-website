@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <title>Товар - CHYN CHYN</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <style>
+        .product-detail {
+            padding: 3rem 0;
+        }
+
+        .product-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .product-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .product-image-large {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid var(--medium-gray);
+        }
+
+        .product-details h1 {
+            margin-bottom: 0.5rem;
+        }
+
+        .product-details .product-category {
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .product-price-large {
+            font-size: 2.5rem;
+            color: var(--gold);
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        .product-description {
+            margin: 2rem 0;
+            line-height: 1.8;
+        }
+
+        .product-specs {
+            background: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .product-specs h3 {
+            margin-bottom: 1rem;
+        }
+
+        .spec-item {
+            display: flex;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            font-weight: 700;
+            width: 150px;
+        }
+
+        .spec-value {
+            flex: 1;
+        }
+
+        .size-selector, .quantity-selector {
+            margin: 1.5rem 0;
+        }
+
+        .size-selector label, .quantity-selector label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .size-selector select, .quantity-selector input {
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            border: 2px solid var(--medium-gray);
+            border-radius: 4px;
+        }
+
+        .quantity-selector input {
+            width: 100px;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .custom-order-link {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--dark-gray);
+        }
+
+        .custom-order-link:hover {
+            color: var(--gold);
+        }
+
+        .product-features {
+            margin: 2rem 0;
+        }
+
+        .product-features ul {
+            list-style: none;
+        }
+
+        .product-features li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .product-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="/" class="logo">CHYN CHYN</a>
+
+            <button class="mobile-menu-toggle">☰</button>
+
+            <nav>
+                <ul>
+                    <li><a href="/shop.html">Магазин</a></li>
+                    <li><a href="/order.html">Індивідуальні замовлення</a></li>
+                    <li><a href="/about.html">Про нас</a></li>
+                    <li><a href="/contact.html">Контакти</a></li>
+                    <li><a href="https://www.etsy.com/shop/ChynChyn" target="_blank">ENG</a></li>
+                    <li>
+                        <div class="cart-icon" id="cart-icon" onclick="toggleCartPreview()">
+                            🛒
+                            <span class="cart-count" id="cart-count" style="display: none;">0</span>
+                        </div>
+
+                        <!-- Cart Preview Dropdown -->
+                        <div class="cart-preview" id="cart-preview">
+                            <div class="empty-cart" id="empty-cart">
+                                <p>Ваш кошик порожній</p>
+                            </div>
+                            <div class="cart-items" id="cart-items" style="display: none;"></div>
+                            <div class="cart-total" id="cart-total" style="display: none;"></div>
+                            <div class="cart-actions" id="cart-actions" style="display: none;">
+                                <a href="/order.html" class="btn btn-primary" style="width: 100%;">
+                                    Оформити замовлення
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Product Detail -->
+    <section class="product-detail">
+        <div class="container">
+            <div style="margin-bottom: 2rem;">
+                <a href="/shop.html" style="color: var(--dark-gray); text-decoration: none;">← Повернутись до магазину</a>
+            </div>
+
+            <div class="product-layout">
+                <!-- Product Image -->
+                <div>
+                    <img id="product-image" src="" alt="" class="product-image-large">
+                </div>
+
+                <!-- Product Info -->
+                <div class="product-details">
+                    <span class="product-category" id="product-category"></span>
+                    <h1 id="product-name"></h1>
+                    <div class="product-price-large" id="product-price"></div>
+
+                    <div class="product-description" id="product-description"></div>
+
+                    <!-- Size Selector -->
+                    <div class="size-selector" id="size-selector-container">
+                        <label for="size-select">Оберіть розмір:</label>
+                        <select id="size-select">
+                            <option value="">-- Оберіть розмір --</option>
+                        </select>
+                    </div>
+
+                    <!-- Quantity -->
+                    <div class="quantity-selector">
+                        <label for="quantity-input">Кількість:</label>
+                        <input type="number" id="quantity-input" value="1" min="1" max="10">
+                    </div>
+
+                    <!-- Add to Cart Button -->
+                    <button class="btn btn-primary add-to-cart-btn" id="add-to-cart-btn">
+                        Додати в кошик
+                    </button>
+
+                    <!-- Custom Order Link -->
+                    <a href="/order.html" class="custom-order-link" id="custom-order-link">
+                        Потрібен індивідуальний пошив? Замовити →
+                    </a>
+
+                    <!-- Product Specs -->
+                    <div class="product-specs">
+                        <h3>Характеристики</h3>
+                        <div class="spec-item">
+                            <div class="spec-label">Склад:</div>
+                            <div class="spec-value" id="product-fabric"></div>
+                        </div>
+                        <div class="spec-item" id="lead-time-spec" style="display: none;">
+                            <div class="spec-label">Термін виготовлення:</div>
+                            <div class="spec-value" id="product-lead-time"></div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Гарантія:</div>
+                            <div class="spec-value">1 рік</div>
+                        </div>
+                    </div>
+
+                    <!-- Product Features -->
+                    <div class="product-features">
+                        <h3>Переваги</h3>
+                        <ul>
+                            <li>Металева фурнітура преміум-класу</li>
+                            <li>Яскрава підкладка</li>
+                            <li>Можливість прання в машині</li>
+                            <li>Український виробник</li>
+                            <li>Індивідуальне підгонювання розміру</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>CHYN CHYN</h3>
+                    <p>Преміум чиноси українського виробництва з 2017 року</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Навігація</h3>
+                    <ul>
+                        <li><a href="/shop.html">Магазин</a></li>
+                        <li><a href="/order.html">Індивідуальні замовлення</a></li>
+                        <li><a href="/about.html">Про нас</a></li>
+                        <li><a href="/contact.html">Контакти</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Контакти</h3>
+                    <ul>
+                        <li>Email: <a href="mailto:office@chynchyn.com">office@chynchyn.com</a></li>
+                        <li>Телефон: <a href="tel:+380663497232">+38 066 349 72 32</a></li>
+                        <li>WhatsApp / Viber / Telegram</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Соціальні мережі</h3>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/ChynChynUA/" target="_blank" title="Facebook">📘</a>
+                        <a href="https://www.etsy.com/shop/ChynChyn" target="_blank" title="Etsy">🛍️</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 CHYN CHYN. Всі права захищені.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/products.js"></script>
+    <script src="/assets/js/cart.js"></script>
+    <script>
+        // Get product ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+
+        async function initProductPage() {
+            if (!productId) {
+                window.location.href = '/shop.html';
+                return;
+            }
+
+            await loadProducts();
+            const product = getProductById(productId);
+
+            if (!product) {
+                alert('Товар не знайдено');
+                window.location.href = '/shop.html';
+                return;
+            }
+
+            // Populate product details
+            document.title = `${product.name} - CHYN CHYN`;
+            document.querySelector('meta[name="description"]').content = product.description;
+
+            document.getElementById('product-image').src = `/assets/images/products/${product.images[0]}`;
+            document.getElementById('product-image').alt = product.name;
+            document.getElementById('product-category').textContent = getCategoryName(product.category);
+            document.getElementById('product-name').textContent = product.name;
+            document.getElementById('product-price').textContent = formatPrice(product.price);
+            document.getElementById('product-description').textContent = product.description;
+            document.getElementById('product-fabric').textContent = product.fabric;
+
+            // Lead time for custom products
+            if (product.leadTime) {
+                document.getElementById('lead-time-spec').style.display = 'flex';
+                document.getElementById('product-lead-time').textContent = product.leadTime;
+            }
+
+            // Populate sizes
+            const sizeSelect = document.getElementById('size-select');
+            product.sizes.forEach(size => {
+                const option = document.createElement('option');
+                option.value = size;
+                option.textContent = size;
+                sizeSelect.appendChild(option);
+            });
+
+            // Add to cart handler
+            document.getElementById('add-to-cart-btn').addEventListener('click', () => {
+                const size = sizeSelect.value;
+                const quantity = parseInt(document.getElementById('quantity-input').value);
+
+                if (!size) {
+                    alert('Будь ласка, оберіть розмір');
+                    return;
+                }
+
+                addToCart(productId, size, null, quantity);
+            });
+
+            // Show cart actions if cart has items
+            const cart = getCart();
+            const cartActions = document.getElementById('cart-actions');
+            if (cartActions && cart.items.length > 0) {
+                cartActions.style.display = 'block';
+            }
+        }
+
+        initProductPage();
+    </script>
+</body>
+</html>
